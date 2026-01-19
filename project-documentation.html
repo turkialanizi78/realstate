@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة العقارات - Real Estate Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --red-primary: #E63946;
+            --yellow-primary: #FFB703;
+            --white: #FFFFFF;
+            --success: #06D6A0;
+            --purple: #9D4EDD;
+            --blue: #4CC9F0;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            background: #0a0a1a;
+            color: #e0e0e0;
+            line-height: 1.8;
+            direction: rtl;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(230, 57, 70, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(76, 201, 240, 0.1) 0%, transparent 50%);
+            animation: backgroundMove 20s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundMove {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header with Animation */
+        header {
+            background: linear-gradient(135deg, #E63946, #d62828, #c1121f);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: var(--white);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 50px rgba(230, 57, 70, 0.5);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        header h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 1s ease-out;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header p {
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(30, 30, 50, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: var(--red-primary);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+            margin: 50px 0;
+            position: relative;
+        }
+
+        h2 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 3.5rem;
+            color: #ffffff;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            font-weight: 900;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--red-primary), var(--yellow-primary));
+            border-radius: 3px;
+            box-shadow: 0 3px 15px rgba(230, 57, 70, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3D Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+            margin: 80px 0;
+            perspective: 1500px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(60, 60, 90, 0.8) 0%, rgba(40, 40, 70, 0.9) 100%);
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            border: 2px solid rgba(230, 57, 70, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            backdrop-filter: blur(10px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(230, 57, 70, 0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-25px) rotateX(8deg) scale(1.05);
+            box-shadow: 0 40px 90px rgba(230, 57, 70, 0.5);
+            border-color: var(--yellow-primary);
+        }
+
+        .card-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            display: inline-block;
+            animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 8px 20px rgba(230, 57, 70, 0.6));
+            background: linear-gradient(135deg, var(--red-primary), var(--yellow-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .card h4 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.9rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .card p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #d0d0d0;
+        }
+
+        /* Scenario Steps */
+        .scenario-container {
+            display: grid;
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .scenario-step {
+            background: linear-gradient(135deg, rgba(60, 60, 90, 0.6) 0%, rgba(40, 40, 70, 0.8) 100%);
+            padding: 35px 40px;
+            border-radius: 20px;
+            border-right: 6px solid var(--red-primary);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .scenario-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--red-primary), var(--yellow-primary));
+            transition: width 0.4s ease;
+        }
+
+        .scenario-step:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .scenario-step:hover {
+            transform: translateX(-15px);
+            box-shadow: 0 20px 50px rgba(230, 57, 70, 0.4);
+            border-right-color: var(--yellow-primary);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--red-primary), #c1121f);
+            color: white;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin-left: 20px;
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.5);
+            float: right;
+        }
+
+        .step-content {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: #e8e8e8;
+        }
+
+        .step-title {
+            font-weight: 700;
+            color: var(--yellow-primary);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Feature Lists */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, rgba(50, 50, 80, 0.7), rgba(30, 30, 60, 0.8));
+            padding: 25px 30px;
+            border-radius: 15px;
+            border-right: 4px solid var(--success);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .feature-item:hover {
+            transform: translateX(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(6, 214, 160, 0.3);
+            border-right-color: var(--yellow-primary);
+        }
+
+        .feature-item::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 900;
+            font-size: 1.5rem;
+            margin-left: 15px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Module Cards */
+        .module-section {
+            background: linear-gradient(135deg, rgba(40, 40, 70, 0.5), rgba(25, 25, 50, 0.7));
+            padding: 50px;
+            border-radius: 25px;
+            margin: 40px 0;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+
+        .module-title {
+            font-size: 2.2rem;
+            color: var(--yellow-primary);
+            margin-bottom: 30px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .module-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 5px 15px rgba(255, 183, 3, 0.5));
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 30, 0.98));
+            color: var(--white);
+            text-align: center;
+            padding: 60px 0;
+            margin-top: 100px;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            font-size: 1.3rem;
+            margin: 10px 0;
+        }
+
+        /* Scroll Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            background: linear-gradient(135deg, var(--red-primary), #c1121f);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.6);
+            transition: all 0.4s ease;
+            z-index: 1000;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.5rem; }
+            .card-grid, .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            nav ul { flex-direction: column; }
+            .module-section { padding: 30px 20px; }
+        }
+
+        /* Loading Animation */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .feature-item, .scenario-step {
+            animation: slideInLeft 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🏢 نظام إدارة العقارات</h1>
+            <p>Real Estate Management System</p>
+            <p style="font-size: 1.2rem; margin-top: 15px; opacity: 0.95;">نظام شامل ومتكامل لإدارة العقارات، العقود، المدفوعات، والصيانة</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#overview">نظرة عامة</a></li>
+                <li><a href="#backend">لوحة التحكم</a></li>
+                <li><a href="#mobile">تطبيق الجوال</a></li>
+                <li><a href="#scenarios">السيناريوهات</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- نظرة عامة -->
+        <section id="overview">
+            <h2>📋 نظرة عامة على المشروع</h2>
+            <p style="font-size: 1.3rem; text-align: center; margin-bottom: 60px; color: #c0c0c0; line-height: 2;">
+                نظام إدارة عقارات متكامل يتكون من لوحة تحكم إدارية وتطبيق جوال<br>
+                يدعم اللغة العربية والإنجليزية بالكامل مع واجهة مستخدم عصرية واحترافية
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">🖥️</div>
+                    <h4>لوحة التحكم الإدارية</h4>
+                    <p>نظام إدارة شامل يسمح بإدارة جميع جوانب المشروع من عقارات، عقود، مدفوعات، وصيانة بكفاءة عالية</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📱</div>
+                    <h4>تطبيق الجوال</h4>
+                    <p>تطبيق احترافي للمستأجرين والمالكين يتيح استعراض العقارات، إدارة العقود، والمدفوعات بسهولة</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🌐</div>
+                    <h4>دعم متعدد اللغات</h4>
+                    <p>دعم كامل للغة العربية والإنجليزية مع RTL/LTR تلقائي وواجهة مستخدم متجاوبة على جميع الأجهزة</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- لوحة التحكم -->
+        <section id="backend">
+            <h2>🖥️ لوحة التحكم الإدارية</h2>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">📊</span>
+                    الصفحة الرئيسية والإحصائيات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">إحصائيات شاملة عن العقارات والشقق</div>
+                    <div class="feature-item">عرض العقود النشطة والمنتهية</div>
+                    <div class="feature-item">تتبع المستأجرين والمدفوعات</div>
+                    <div class="feature-item">رسوم بيانية للإيرادات والمصروفات</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🏢</span>
+                    إدارة العمارات والوحدات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">عرض وإدارة جميع العمارات والشقق</div>
+                    <div class="feature-item">إضافة وتعديل تفاصيل الوحدات</div>
+                    <div class="feature-item">إدارة الصور والمرفقات</div>
+                    <div class="feature-item">تحديد الأسعار والحالات</div>
+                    <div class="feature-item">عرض الوحدات المتاحة والمؤجرة</div>
+                    <div class="feature-item">إحصائيات مفصلة لكل عمارة</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">📝</span>
+                    إدارة العقود والاتفاقيات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">إنشاء عقود إيجار وبيع جديدة</div>
+                    <div class="feature-item">متابعة حالة العقود (معلق، نشط، منتهي)</div>
+                    <div class="feature-item">ربط العقود بالوحدات والمستأجرين</div>
+                    <div class="feature-item">إدارة مرفقات العقود والوثائق</div>
+                    <div class="feature-item">تجديد وإنهاء العقود تلقائياً</div>
+                    <div class="feature-item">إرسال إشعارات قبل انتهاء العقود</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">💰</span>
+                    إدارة المدفوعات والإيصالات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">تتبع جميع المدفوعات والإيرادات</div>
+                    <div class="feature-item">نظام الموافقة على المدفوعات</div>
+                    <div class="feature-item">رفع إثباتات الدفع والمستندات</div>
+                    <div class="feature-item">إصدار إيصالات تلقائية</div>
+                    <div class="feature-item">تنبيهات للمدفوعات المتأخرة</div>
+                    <div class="feature-item">تقارير مالية شاملة</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🔧</span>
+                    إدارة الصيانة والخدمات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">استلام ومتابعة طلبات الصيانة</div>
+                    <div class="feature-item">تعيين مزودي الخدمة والفنيين</div>
+                    <div class="feature-item">تتبع حالة الصيانة (معلق، قيد التنفيذ، مكتمل)</div>
+                    <div class="feature-item">إدارة فواتير الصيانة</div>
+                    <div class="feature-item">جدولة الصيانة الدورية</div>
+                    <div class="feature-item">تقارير الصيانة والتكاليف</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">👥</span>
+                    إدارة المستخدمين والصلاحيات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">إدارة حسابات المستخدمين</div>
+                    <div class="feature-item">تحديد الأدوار والصلاحيات</div>
+                    <div class="feature-item">تفعيل وتعطيل الحسابات</div>
+                    <div class="feature-item">عرض سجل نشاطات المستخدمين</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- تطبيق الجوال -->
+        <section id="mobile">
+            <h2>📱 تطبيق الجوال للمستخدمين</h2>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🔐</span>
+                    المصادقة والأمان
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">تسجيل الدخول الآمن</div>
+                    <div class="feature-item">إنشاء حساب جديد بسهولة</div>
+                    <div class="feature-item">استرجاع كلمة المرور</div>
+                    <div class="feature-item">حماية البيانات الشخصية</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🏠</span>
+                    استعراض العقارات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">تصفح العمارات والشقق المتاحة</div>
+                    <div class="feature-item">عرض تفاصيل كاملة مع الصور</div>
+                    <div class="feature-item">البحث والتصفية المتقدمة</div>
+                    <div class="feature-item">حفظ العقارات المفضلة</div>
+                    <div class="feature-item">مقارنة العقارات</div>
+                    <div class="feature-item">طلب إيجار أو شراء مباشر</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">📝</span>
+                    إدارة العقود الشخصية
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">عرض جميع عقودي الحالية</div>
+                    <div class="feature-item">تفاصيل كاملة لكل عقد</div>
+                    <div class="feature-item">متابعة حالة الطلبات</div>
+                    <div class="feature-item">تجديد العقود إلكترونياً</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">💳</span>
+                    المدفوعات والإيصالات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">عرض جميع مدفوعاتي</div>
+                    <div class="feature-item">إضافة دفعة جديدة</div>
+                    <div class="feature-item">رفع إثبات الدفع</div>
+                    <div class="feature-item">تحميل الإيصالات</div>
+                    <div class="feature-item">تنبيهات للمدفوعات المستحقة</div>
+                    <div class="feature-item">سجل كامل للمعاملات المالية</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🔧</span>
+                    طلبات الصيانة
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">إرسال طلب صيانة جديد</div>
+                    <div class="feature-item">متابعة حالة الطلبات</div>
+                    <div class="feature-item">التواصل مع الفنيين</div>
+                    <div class="feature-item">عرض فواتير الصيانة</div>
+                    <div class="feature-item">تقييم جودة الخدمة</div>
+                    <div class="feature-item">سجل طلبات الصيانة السابقة</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">👤</span>
+                    الملف الشخصي والإعدادات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">عرض وتعديل المعلومات الشخصية</div>
+                    <div class="feature-item">تغيير كلمة المرور</div>
+                    <div class="feature-item">تحديث الصورة الشخصية</div>
+                    <div class="feature-item">تغيير اللغة المفضلة</div>
+                    <div class="feature-item">إعدادات الإشعارات</div>
+                    <div class="feature-item">عرض سجل النشاطات</div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🔔</span>
+                    الإشعارات والتنبيهات
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">إشعارات المدفوعات المستحقة</div>
+                    <div class="feature-item">تنبيهات انتهاء العقود</div>
+                    <div class="feature-item">تحديثات حالة الطلبات</div>
+                    <div class="feature-item">إشعارات الصيانة</div>
+                    <div class="feature-item">رسائل الموافقة والرفض</div>
+                    <div class="feature-item">إشعارات عامة من الإدارة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- السيناريوهات -->
+        <section id="scenarios">
+            <h2>📖 السيناريوهات الكاملة</h2>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🏠</span>
+                    سيناريو إيجار شقة من عمارة
+                </div>
+                <div class="scenario-container">
+                    <div class="scenario-step">
+                        <span class="step-number">1</span>
+                        <span class="step-title">تسجيل الدخول أو إنشاء حساب</span>
+                        <div class="step-content">
+                            المستخدم يسجل الدخول بحسابه الموجود أو ينشئ حساب جديد من خلال شاشة التسجيل
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">2</span>
+                        <span class="step-title">استعراض العمارات المتاحة</span>
+                        <div class="step-content">
+                            من الشاشة الرئيسية، المستخدم يضغط على "العمارات" لاستعراض جميع العمارات المتاحة مع صورها وتفاصيلها
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">3</span>
+                        <span class="step-title">اختيار عمارة ومراجعة التفاصيل</span>
+                        <div class="step-content">
+                            المستخدم يضغط على عمارة لرؤية تفاصيلها الكاملة: العنوان، المميزات، عدد الطوابق، والوحدات المتاحة
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">4</span>
+                        <span class="step-title">اختيار شقة من العمارة</span>
+                        <div class="step-content">
+                            من صفحة تفاصيل العمارة، المستخدم يختار شقة متاحة ويراجع تفاصيلها: المساحة، عدد الغرف، السعر، والمميزات
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">5</span>
+                        <span class="step-title">طلب إيجار الشقة</span>
+                        <div class="step-content">
+                            المستخدم يضغط على "إيجار الآن" ويملأ النموذج: تاريخ البدء، تاريخ الانتهاء، الإيجار الشهري، ومبلغ الضمان
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">6</span>
+                        <span class="step-title">إرسال الطلب وإنشاء عقد</span>
+                        <div class="step-content">
+                            يتم إرسال الطلب وإنشاء عقد إيجار بحالة "معلق" (pending) في انتظار موافقة الإدارة
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">7</span>
+                        <span class="step-title">موافقة الإدارة على العقد</span>
+                        <div class="step-content">
+                            المدير في لوحة التحكم يراجع العقد ويوافق عليه، فيتم تغيير حالة العقد إلى "نشط" (active) وتحديث حالة الشقة إلى "مؤجرة"
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">8</span>
+                        <span class="step-title">إضافة دفعة من التطبيق</span>
+                        <div class="step-content">
+                            المستخدم يذهب إلى "مدفوعاتي" ويضيف دفعة جديدة مع رفع إثبات الدفع (صورة إيصال أو تحويل)
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">9</span>
+                        <span class="step-title">موافقة الإدارة على الدفعة</span>
+                        <div class="step-content">
+                            المدير يراجع إثبات الدفع ويوافق على الدفعة، فيتم تغيير حالة الدفعة إلى "مدفوع" وإنشاء إيصال تلقائياً
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">10</span>
+                        <span class="step-title">تحميل الإيصال</span>
+                        <div class="step-content">
+                            المستخدم يمكنه الآن عرض وتحميل الإيصال من شاشة "إيصالاتي" في التطبيق
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🏘️</span>
+                    سيناريو شراء عقار (فيلا/مكتب/محل)
+                </div>
+                <div class="scenario-container">
+                    <div class="scenario-step">
+                        <span class="step-number">1</span>
+                        <span class="step-title">استعراض العقارات المتاحة للبيع</span>
+                        <div class="step-content">
+                            المستخدم يضغط على "العقارات" من الشاشة الرئيسية لرؤية جميع العقارات المتاحة للبيع
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">2</span>
+                        <span class="step-title">اختيار عقار ومراجعة التفاصيل</span>
+                        <div class="step-content">
+                            المستخدم يختار عقاراً (فيلا، مكتب، أو محل) ويراجع تفاصيله الكاملة: الموقع، المساحة، السعر، والمميزات
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">3</span>
+                        <span class="step-title">طلب شراء العقار</span>
+                        <div class="step-content">
+                            المستخدم يضغط على "شراء الآن" ويملأ النموذج: سعر البيع، دفعة أولى، طريقة الدفع، وعدد الأقساط (إن وجدت)
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">4</span>
+                        <span class="step-title">إنشاء عقد بيع</span>
+                        <div class="step-content">
+                            يتم إنشاء عقد بيع مع حساب المبلغ المتبقي بعد الدفعة الأولى
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">5</span>
+                        <span class="step-title">موافقة الإدارة على البيع</span>
+                        <div class="step-content">
+                            المدير يراجع عقد البيع ويوافق عليه، فيتم تحديث حالة العقار إلى "قيد البيع"
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">6</span>
+                        <span class="step-title">إضافة دفعات إضافية</span>
+                        <div class="step-content">
+                            المستخدم يضيف دفعات إضافية من شاشة "مدفوعاتي" حتى اكتمال المبلغ الكامل
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">7</span>
+                        <span class="step-title">اكتمال المبلغ وتحديث الملكية</span>
+                        <div class="step-content">
+                            عند اكتمال المبلغ الكامل، يتم تحديث حالة العقار إلى "مباع" وتحديث المالك في النظام
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-section">
+                <div class="module-title">
+                    <span class="module-icon">🔧</span>
+                    سيناريو طلب صيانة
+                </div>
+                <div class="scenario-container">
+                    <div class="scenario-step">
+                        <span class="step-number">1</span>
+                        <span class="step-title">إرسال طلب صيانة</span>
+                        <div class="step-content">
+                            المستخدم يذهب إلى "طلبات الصيانة" ويضيف طلباً جديداً مع وصف المشكلة ورفع صور إن وجدت
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">2</span>
+                        <span class="step-title">استلام الطلب في لوحة التحكم</span>
+                        <div class="step-content">
+                            الإدارة تستلم الطلب وتقوم بتعيين فني أو مزود خدمة للتعامل مع المشكلة
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">3</span>
+                        <span class="step-title">متابعة حالة الصيانة</span>
+                        <div class="step-content">
+                            المستخدم يتابع حالة طلب الصيانة من التطبيق: معلق، قيد التنفيذ، أو مكتمل
+                        </div>
+                    </div>
+                    <div class="scenario-step">
+                        <span class="step-number">4</span>
+                        <span class="step-title">إتمام الصيانة</span>
+                        <div class="step-content">
+                            بعد إتمام الصيانة، يتم إصدار فاتورة صيانة ويمكن للمستخدم عرضها من التطبيق
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p style="font-size: 1.5rem; margin-bottom: 15px; font-weight: 700;">نظام إدارة العقارات</p>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Real Estate Management System</p>
+            <p style="font-size: 1rem; margin-top: 20px; opacity: 0.7;">نظام شامل ومتكامل لإدارة جميع جوانب إدارة العقارات</p>
+        </div>
+    </footer>
+
+    <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        ↑
+    </div>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.style.display = 'flex';
+            } else {
+                scrollTop.style.display = 'none';
+            }
+        });
+
+        // 3D Card Effect with Mouse
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+
+        // Animate on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.module-section, .scenario-step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
